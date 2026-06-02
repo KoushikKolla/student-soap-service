@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/student"
+           xmlns:tns="http://example.com/student"
+           elementFormDefault="qualified">
+
+    <xs:complexType name="StudentType">
+
+        <xs:sequence>
+
+            <xs:element name="studentCode"
+                        type="xs:string"/>
+
+            <xs:element name="name"
+                        type="xs:string"/>
+
+            <xs:element name="email"
+                        type="xs:string"/>
+
+            <xs:element name="branch"
+                        type="xs:string"/>
+
+            <xs:element name="semester"
+                        type="xs:int"/>
+
+        </xs:sequence>
+
+    </xs:complexType>
+
+    <xs:element name="getStudentRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element name="studentCode"
+                            type="xs:string"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="getStudentResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element name="student"
+                            type="tns:StudentType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+</xs:schema>
