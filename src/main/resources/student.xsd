@@ -246,4 +246,78 @@
     </xs:element>
 
 
+    <xs:complexType name="StudentSearchCriteriaType">
+
+        <xs:sequence>
+
+            <xs:element
+                    name="studentCode"
+                    type="xs:string"
+                    minOccurs="0"/>
+
+            <xs:element
+                    name="name"
+                    type="xs:string"
+                    minOccurs="0"/>
+
+            <xs:element
+                    name="email"
+                    type="xs:string"
+                    minOccurs="0"/>
+
+            <xs:element
+                    name="branch"
+                    type="xs:string"
+                    minOccurs="0"/>
+
+            <xs:element
+                    name="semester"
+                    type="xs:int"
+                    minOccurs="0"/>
+
+        </xs:sequence>
+
+    </xs:complexType>
+
+    <xs:element name="searchStudentsRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="criteria"
+                        type="tns:StudentSearchCriteriaType"/>
+
+                <xs:element
+                        name="pageNumber"
+                        type="xs:int"/>
+
+                <xs:element
+                        name="pageSize"
+                        type="xs:int"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="searchStudentsResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="students"
+                        type="tns:StudentsType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+
 </xs:schema>
