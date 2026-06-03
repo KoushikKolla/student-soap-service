@@ -28,6 +28,82 @@
 
     </xs:complexType>
 
+    <xs:complexType name="StudentsType">
+
+        <xs:sequence>
+
+            <xs:element name="student"
+                        type="tns:StudentType"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+
+        </xs:sequence>
+
+    </xs:complexType>
+    <xs:element name="getAllStudentsRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element name="pageNumber"
+                            type="xs:int"/>
+
+                <xs:element name="pageSize"
+                            type="xs:int"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element
+            name="getStudentsByBranchAndSemesterRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="branch"
+                        type="xs:string"/>
+
+                <xs:element
+                        name="semester"
+                        type="xs:int"/>
+
+                <xs:element
+                        name="pageNumber"
+                        type="xs:int"/>
+
+                <xs:element
+                        name="pageSize"
+                        type="xs:int"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element
+            name="getStudentsByBranchAndSemesterResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="students"
+                        type="tns:StudentsType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
     <xs:element name="getStudentRequest">
 
         <xs:complexType>
@@ -57,5 +133,117 @@
         </xs:complexType>
 
     </xs:element>
+
+    <xs:element name="getAllStudentsResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element name="students"
+                            type="tns:StudentsType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="addStudentRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="student"
+                        type="tns:StudentType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="addStudentResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="student"
+                        type="tns:StudentType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="updateStudentRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="student"
+                        type="tns:StudentType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="updateStudentResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="student"
+                        type="tns:StudentType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="deleteStudentRequest">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="studentCode"
+                        type="xs:string"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="deleteStudentResponse">
+
+        <xs:complexType>
+
+            <xs:sequence>
+
+                <xs:element
+                        name="student"
+                        type="tns:StudentType"/>
+
+            </xs:sequence>
+
+        </xs:complexType>
+
+    </xs:element>
+
 
 </xs:schema>
