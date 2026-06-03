@@ -62,4 +62,42 @@ public class StudentEndpoint {
 
         return response;
     }
-}
+    @PayloadRoot(  namespace = NAMESPACE_URI,localPart = "getAllStudentsRequest"
+    )
+    @ResponsePayload
+    public GetAllStudentsResponse getAllStudents(@RequestPayload GetAllStudentsRequest request){
+        List<StudentDto> students=studentService.getAllStudents(request.getPageNumber(),request.getPageSize());
+        StudentsType studentType= new StudentsType();
+        for (StudentDto dto : students) {
+
+            StudentType student =
+                    new StudentType();
+
+            student.setStudentCode(
+                    dto.getStudentCode());
+
+            student.setName(
+                    dto.getName());
+
+            student.setEmail(
+                    dto.getEmail());
+
+            student.setBranch(
+                    dto.getBranch());
+
+            student.setSemester(
+                    dto.getSemester());
+
+            studentType.getStudent()
+                    .add(student);
+        }
+
+        GetAllStudentsResponse response =
+                new GetAllStudentsResponse();
+
+        response.setStudents(
+                studentType);
+
+        return response;
+    }
+    }
