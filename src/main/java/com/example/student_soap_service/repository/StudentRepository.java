@@ -29,5 +29,12 @@ public class StudentRepository {
                 )
                 .fetchOne();
     }
+    public List<StudentsRecord> findAll(int pageNumber,int pageSize){
+        int offset=(pageNumber-1)*pageSize;
+       return dsl.selectFrom(STUDENTS)
+                .limit(pageSize)
+                .offset(offset)
+                .fetch();
+    }
 }
 
