@@ -14,54 +14,118 @@ public class ClientHeaderInterceptor
         implements EndpointInterceptor {
 
     @Override
-    public boolean handleRequest(MessageContext messageContext, Object endpoint) throws Exception {
+    public boolean handleRequest(
+            MessageContext messageContext,
+            Object endpoint)
+            throws Exception {
+
         String clientId = null;
         String requestId = null;
+        String username = null;
+        String password = null;
 
-        SoapMessage soapMessage = (SoapMessage) messageContext.getRequest();
-        Source source =
-                soapMessage.getPayloadSource();
+        SoapMessage soapMessage =
+                (SoapMessage) messageContext.getRequest();
 
         System.out.println(
                 "Payload Source = "
-                        + source);
+                        + soapMessage.getPayloadSource());
+
         System.out.println(
                 "Endpoint = "
                         + endpoint.getClass().getSimpleName());
-        SoapHeader soapHeader = soapMessage.getSoapHeader();
 
+        SoapHeader soapHeader =
+                soapMessage.getSoapHeader();
 
-        Iterator<SoapHeaderElement> iterator = soapHeader.examineAllHeaderElements();
+        Iterator<SoapHeaderElement> iterator =
+                soapHeader.examineAllHeaderElements();
 
         while (iterator.hasNext()) {
 
-            SoapHeaderElement element = iterator.next();
+            SoapHeaderElement element =
+                    iterator.next();
 
-            String localPart = element.getName().getLocalPart();
+            String localPart =
+                    element.getName().getLocalPart();
 
-            if ("clientId".equals(localPart)) {
+            String value =
+                    element.getText();
 
-                clientId = element.getText();
-            }
+            switch (localPart) {
 
-            if ("requestId".equals(localPart)) {
+                case "clientId":
+                    clientId = value;
+                    break;
 
-                requestId = element.getText();
+                case "requestId":
+                    requestId = value;
+                    break;
+
+                case "username":
+                    username = value;
+                    break;
+
+                case "password":
+                    password = value;
+                    break;
             }
         }
+
+        // Client Validation
+
         if (clientId == null || clientId.isBlank()) {
-
-            throw new RuntimeException("Client Id is required");
+            throw new RuntimeException(
+                    "Client Id is required");
         }
-        System.out.println(
-                "Client Id : " + clientId);
+
+        // Authentication Validation
+
+        if (username == null || username.isBlank()) {
+            throw new RuntimeException(
+                    "Username is required");
+        }
+
+        if (password == null || password.isBlank()) {
+            throw new RuntimeException(
+                    "Password is required");
+        }
+
+        if (!"admin".equals(username)
+                || !"admin123".equals(password)) {
+
+            throw new RuntimeException(
+                    "Invalid Username or Password");
+        }
 
         System.out.println(
-                "Request Id : " + requestId);
+                "\n====================================");
+
+        System.out.println(
+                "SOAP REQUEST RECEIVED");
+
+        System.out.println(
+                "Client Id : "
+                        + clientId);
+
+        System.out.println(
+                "Request Id : "
+                        + requestId);
+
+        System.out.println(
+                "Username : "
+                        + username);
+
+        System.out.println(
+                "Endpoint : "
+                        + endpoint.getClass().getSimpleName());
+
         System.out.println(
                 "Time : "
                         + LocalDateTime.now());
 
+        System.out.println(
+                "====================================\n");
 
         return true;
     }
@@ -71,8 +135,10 @@ public class ClientHeaderInterceptor
             MessageContext messageContext,
             Object endpoint)
             throws Exception {
+
         System.out.println(
                 "SOAP RESPONSE SENT");
+
         return true;
     }
 
