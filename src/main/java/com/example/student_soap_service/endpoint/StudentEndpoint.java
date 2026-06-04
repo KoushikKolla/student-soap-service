@@ -1,6 +1,7 @@
 package com.example.student_soap_service.endpoint;
 
 import com.example.student_soap_service.dto.StudentDto;
+import com.example.student_soap_service.dto.StudentSearchCriteria;
 import com.example.student_soap_service.generated.*;
 import com.example.student_soap_service.service.StudentService;
 
@@ -286,6 +287,76 @@ public class StudentEndpoint {
                 new DeleteStudentResponse();
 
         response.setStudent(student);
+
+        return response;
+    }
+    @PayloadRoot(
+            namespace = NAMESPACE_URI,
+            localPart = "searchStudentsRequest")
+    @ResponsePayload
+    public SearchStudentsResponse searchStudents(
+            @RequestPayload
+            SearchStudentsRequest request) {
+
+        StudentSearchCriteriaType criteriaType =
+                request.getCriteria();
+
+        StudentSearchCriteria criteria =
+                new StudentSearchCriteria();
+
+        criteria.setStudentCode(
+                criteriaType.getStudentCode());
+
+        criteria.setName(
+                criteriaType.getName());
+
+        criteria.setEmail(
+                criteriaType.getEmail());
+
+        criteria.setBranch(
+                criteriaType.getBranch());
+
+        criteria.setSemester(
+                criteriaType.getSemester());
+
+        List<StudentDto> students =
+                studentService.searchStudents(
+                        criteria,
+                        request.getPageNumber(),
+                        request.getPageSize());
+
+        StudentsType studentsType =
+                new StudentsType();
+
+        for(StudentDto dto : students) {
+
+            StudentType student =
+                    new StudentType();
+
+            student.setStudentCode(
+                    dto.getStudentCode());
+
+            student.setName(
+                    dto.getName());
+
+            student.setEmail(
+                    dto.getEmail());
+
+            student.setBranch(
+                    dto.getBranch());
+
+            student.setSemester(
+                    dto.getSemester());
+
+            studentsType.getStudent()
+                    .add(student);
+        }
+
+        SearchStudentsResponse response =
+                new SearchStudentsResponse();
+
+        response.setStudents(
+                studentsType);
 
         return response;
     }

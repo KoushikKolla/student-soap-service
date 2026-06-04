@@ -1,7 +1,10 @@
 package com.example.student_soap_service.repository;
 
 import com.example.student_soap_service.dto.StudentDto;
+import com.example.student_soap_service.dto.StudentSearchCriteria;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 
@@ -121,6 +124,94 @@ public class StudentRepository {
         dsl.deleteFrom(STUDENTS)
                 .where(STUDENTS.STUDENT_CODE.eq(studentCode))
                 .execute();
+    }
+    public List<StudentsRecord> searchStudents(
+            StudentSearchCriteria criteria,
+            int pageNumber,
+            int pageSize) {
+
+        int offset =
+                (pageNumber - 1) * pageSize;
+
+        Condition condition =
+                DSL.trueCondition();
+
+
+        if(criteria.getStudentCode() != null
+                && !criteria.getStudentCode().isBlank()) {
+
+            condition =
+                    condition.and(
+
+                            STUDENTS.STUDENT_CODE.eq(
+                                    criteria.getStudentCode().trim()
+                            )
+                    );
+        }
+
+        if(criteria.getName() != null
+                && !criteria.getName().isBlank()) {
+
+            condition =
+                    condition.and(
+
+                            STUDENTS.NAME.likeIgnoreCase(
+
+                                    "%"
+                                            + criteria.getName().trim()
+                                            + "%"
+                            )
+                    );
+        }
+        if(criteria.getEmail() != null
+                && !criteria.getEmail().isBlank()) {
+
+            condition =
+                    condition.and(
+
+                            STUDENTS.EMAIL.likeIgnoreCase(
+
+                                    "%"
+                                            + criteria.getEmail().trim()
+                                            + "%"
+                            )
+                    );
+        }
+
+        if(criteria.getBranch() != null
+                && !criteria.getBranch().isBlank()) {
+
+            condition =
+                    condition.and(
+
+                            STUDENTS.BRANCH.eq(
+                                    criteria.getBranch()
+                                            .trim()
+                                            .toUpperCase()
+                            )
+                    );
+        }
+
+        if(criteria.getSemester() != null) {
+
+            condition =
+                    condition.and(
+
+                            STUDENTS.SEMESTER.eq(
+                                    criteria.getSemester()
+                            )
+                    );
+        }
+
+        return dsl.selectFrom(STUDENTS)
+
+                .where(condition)
+
+                .limit(pageSize)
+
+                .offset(offset)
+
+                .fetch();
     }
 
 

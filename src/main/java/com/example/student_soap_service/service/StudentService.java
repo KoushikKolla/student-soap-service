@@ -1,6 +1,7 @@
 package com.example.student_soap_service.service;
 
 import com.example.student_soap_service.dto.StudentDto;
+import com.example.student_soap_service.dto.StudentSearchCriteria;
 import com.example.student_soap_service.exception.DuplicateStudentException;
 import com.example.student_soap_service.exception.StudentNotFoundException;
 import com.example.student_soap_service.repository.StudentRepository;
@@ -136,5 +137,17 @@ public class StudentService {
         StudentDto deletedStudent= mapToDto(student);
         repository.deleteStudent(studentCode);
         return deletedStudent;
+    }
+    public List<StudentDto> searchStudents(
+            StudentSearchCriteria criteria,
+            int pageNumber,
+            int pageSize){
+        List<StudentsRecord> students=
+                repository.searchStudents(criteria,pageNumber,pageSize);
+        ArrayList<StudentDto> results= new ArrayList<>();
+        for(StudentsRecord student : students){
+            results.add(mapToDto(student));
+        }
+        return results;
     }
 }
