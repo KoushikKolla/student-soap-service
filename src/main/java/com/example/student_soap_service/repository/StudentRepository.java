@@ -125,82 +125,50 @@ public class StudentRepository {
                 .where(STUDENTS.STUDENT_CODE.eq(studentCode))
                 .execute();
     }
-    public List<StudentsRecord> searchStudents(
-            StudentSearchCriteria criteria,
-            int pageNumber,
-            int pageSize) {
 
-        int offset =
-                (pageNumber - 1) * pageSize;
+    public List<StudentsRecord> searchStudents(StudentSearchCriteria criteria, int pageNumber, int pageSize) {
 
-        Condition condition =
-                DSL.trueCondition();
+        int offset = (pageNumber - 1) * pageSize;
+
+        Condition condition = DSL.trueCondition();
 
 
-        if(criteria.getStudentCode() != null
-                && !criteria.getStudentCode().isBlank()) {
+        if (criteria.getStudentCode() != null && !criteria.getStudentCode().isBlank()) {
 
-            condition =
-                    condition.and(
+            condition = condition.and(
 
-                            STUDENTS.STUDENT_CODE.eq(
-                                    criteria.getStudentCode().trim()
-                            )
-                    );
+                    STUDENTS.STUDENT_CODE.eq(criteria.getStudentCode().trim()));
         }
 
-        if(criteria.getName() != null
-                && !criteria.getName().isBlank()) {
+        if (criteria.getName() != null && !criteria.getName().isBlank()) {
 
-            condition =
-                    condition.and(
+            condition = condition.and(
 
-                            STUDENTS.NAME.likeIgnoreCase(
+                    STUDENTS.NAME.likeIgnoreCase(
 
-                                    "%"
-                                            + criteria.getName().trim()
-                                            + "%"
-                            )
-                    );
+                            "%" + criteria.getName().trim() + "%"));
         }
-        if(criteria.getEmail() != null
-                && !criteria.getEmail().isBlank()) {
+        if (criteria.getEmail() != null && !criteria.getEmail().isBlank()) {
 
-            condition =
-                    condition.and(
+            condition = condition.and(
 
-                            STUDENTS.EMAIL.likeIgnoreCase(
+                    STUDENTS.EMAIL.likeIgnoreCase(
 
-                                    "%"
-                                            + criteria.getEmail().trim()
-                                            + "%"
-                            )
-                    );
+                            "%" + criteria.getEmail().trim() + "%"));
         }
 
-        if(criteria.getBranch() != null
-                && !criteria.getBranch().isBlank()) {
+        if (criteria.getBranch() != null && !criteria.getBranch().isBlank()) {
 
-            condition =
-                    condition.and(
+            condition = condition.and(
 
-                            STUDENTS.BRANCH.eq(
-                                    criteria.getBranch()
-                                            .trim()
-                                            .toUpperCase()
-                            )
-                    );
+                    STUDENTS.BRANCH.eq(criteria.getBranch().trim().toUpperCase()));
         }
 
-        if(criteria.getSemester() != null) {
+        if (criteria.getSemester() != null) {
 
-            condition =
-                    condition.and(
+            condition = condition.and(
 
-                            STUDENTS.SEMESTER.eq(
-                                    criteria.getSemester()
-                            )
-                    );
+                    STUDENTS.SEMESTER.eq(criteria.getSemester()));
         }
 
         return dsl.selectFrom(STUDENTS)
