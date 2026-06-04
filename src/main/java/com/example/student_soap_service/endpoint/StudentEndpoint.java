@@ -33,7 +33,6 @@ public class StudentEndpoint {
     public GetStudentResponse getStudent(
             @RequestPayload
             GetStudentRequest request) {
-
         StudentDto dto =
                 studentService.getStudent(
                         request.getStudentCode());
